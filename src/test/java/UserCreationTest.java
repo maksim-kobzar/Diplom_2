@@ -1,5 +1,4 @@
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.example.User;
 import org.example.UserCreation;
@@ -16,13 +15,11 @@ public class UserCreationTest {
 
     private String token;
     private User user;
-
     UserCreation userCreation = new UserCreation();
 
     @Before
     public void setUp(){
         user = UserGenerator.getDefault();
-
     }
 
     @Test
@@ -46,6 +43,7 @@ public class UserCreationTest {
     @DisplayName("Создание пользователя с незаполненным обязательным полем пароль")
     public void userNotPasswordTest(){
         ValidatableResponse responseNotPassword = userCreation.createCourier(UserGenerator.getNotPasswodr());
+        token = responseNotPassword.extract().path("accessToken");
         responseNotPassword.assertThat().statusCode(SC_FORBIDDEN);
     }
 
@@ -70,7 +68,7 @@ public class UserCreationTest {
         responseNewUser.assertThat().statusCode(SC_OK);
         responseAuthorization.assertThat().statusCode(SC_UNAUTHORIZED);
         String messageResponse = responseAuthorization.extract().path("message");
-        Assert.assertEquals("Ошибка в тексте сообщения при неуспешном входе", messageResponse, "email or password are incorrect");
+        Assert.assertEquals("Ошибка в тексте сообщения при неуспешном входе", "email or password are incorrect", messageResponse);
     }
 
     @Test
@@ -83,7 +81,7 @@ public class UserCreationTest {
         responseNewUser.assertThat().statusCode(SC_OK);
         responseAuthorization.assertThat().statusCode(SC_UNAUTHORIZED);
         String messageResponse = responseAuthorization.extract().path("message");
-        Assert.assertEquals("Ошибка в тексте сообщения при неуспешном входе", messageResponse, "email or password are incorrect");
+        Assert.assertEquals("Ошибка в тексте сообщения при неуспешном входе", "email or password are incorrect", messageResponse);
     }
 
     @Test
@@ -124,7 +122,7 @@ public class UserCreationTest {
         responseChanges.assertThat().statusCode(SC_UNAUTHORIZED);
         String messageResponse = responseChanges.extract().path("message");
 
-        Assert.assertEquals("Ошибка при изменении name без передачи токена", messageResponse, "You should be authorised");
+        Assert.assertEquals("Ошибка при изменении name без передачи токена", "You should be authorised", messageResponse);
     }
 
     @Test
@@ -137,12 +135,12 @@ public class UserCreationTest {
         responseChanges.assertThat().statusCode(SC_UNAUTHORIZED);
         String messageResponse = responseChanges.extract().path("message");
 
-        Assert.assertEquals("Ошибка при изменении email без передачи токена", messageResponse, "You should be authorised");
+        Assert.assertEquals("Ошибка при изменении email без передачи токена", "You should be authorised", messageResponse);
     }
 
     @After
-    public void userDelete(){
-        if (token != null){
+    public void userDelete() {
+        if (token != null) {
             ValidatableResponse responseDelete = userCreation.deleteUser(token);
             responseDelete.assertThat().statusCode(SC_ACCEPTED);
         }

@@ -1,10 +1,12 @@
 package org.example;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 public class UserGenerator {
 
-    private static String email = "test22021@ssы58sgdd.ry";
-    private static String password = "856456gh4";
-    private static String name = "Kolya Baskow";
+    private final static String email = RandomStringUtils.randomAlphanumeric(7) + "@" + RandomStringUtils.randomAlphanumeric(4) + ".ry";
+    private final static String password = RandomStringUtils.randomAlphanumeric(10);
+    private final static String name = RandomStringUtils.randomAlphabetic(5) + RandomStringUtils.randomAlphabetic(4);
     public static User getDefault(){
         return new User(email, password, name);
     }

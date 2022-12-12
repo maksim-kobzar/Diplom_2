@@ -5,7 +5,7 @@ import java.util.List;
 
 public class OrderGenerator {
 
-    public List<String> ingredient = new ArrayList<String>();
+    List<String> ingredient = new ArrayList<String>();
 
     public void ingredientHash(String ingredientHash){
         ingredient.add(ingredientHash);

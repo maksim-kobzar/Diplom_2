@@ -29,10 +29,9 @@ public class OrderCreate extends Client {
                 .then();
     }
 
-    public List<String> ingredient = new ArrayList<String>();
     public void ingredientHash(String ingredientHash){
+        List<String> ingredient = new ArrayList<String>();
         ingredient.add(ingredientHash);
-
     }
 
 }

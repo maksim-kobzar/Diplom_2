@@ -7,9 +7,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-import java.util.Random;
-
 import static org.apache.http.HttpStatus.*;
 
 @DisplayName("Создание заказа")
@@ -34,7 +31,7 @@ public class OrderCreateTest {
         ValidatableResponse responseIngredients = orderCreate.getIngredients();
         orderCreate.ingredientHash(responseIngredients.extract().path("data[0]._id"));
         orderCreate.ingredientHash(responseIngredients.extract().path("data[2]._id"));
-        //System.out.println(orderCreate.ingredient);
+        responseIngredients.statusCode(SC_OK);
     }
 
     @Test
@@ -81,7 +78,7 @@ public class OrderCreateTest {
         ValidatableResponse responseIngredients = orderCreate.getIngredients();
         orderGenerator.ingredientHash(RandomStringUtils.randomAlphanumeric(24, 24));
         orderGenerator.ingredientHash(RandomStringUtils.randomAlphanumeric(24, 24));
-
+        responseIngredients.statusCode(SC_OK);
         ValidatableResponse responseOrderNewCreate = orderCreate.orderNewCreate(order, token);
         responseOrderNewCreate.statusCode(SC_INTERNAL_SERVER_ERROR);
     }
